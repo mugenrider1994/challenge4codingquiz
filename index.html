@@ -4,15 +4,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coding Quiz</title>
+    <link rel="stylesheet" href="./assets/style.css" />
+    <title>Coding Quiz Challenge</title>
 </head>
 <body>
     <header>
         <h1>Coding Quiz</h1>
     </header>
-    <div id="quiz"></div>
-    <button id="submit">Submit</button>
-    <div id="View High Scores"></div>
+    <navbar class="timer" >Timer:
+        <button class="button-timer"></button>
+
+    </navbar>
+    <section class="intro-box">Coding Quiz Challenge!
+        <p>Try to answer the the following questions before the time runs out!</p>
+        <button type="button" class="start-button">Start</button>
+    </section>
+    <div class="question-box hide">
+        <div class="questions-container" id="questions">
+            Good luck
+        </div>
+        <div class="button-container">
+            <button class="choices" >A</button>
+            <button class="choices" >B</button>
+            <button class="choices" >C</button>
+            <button class="choices" >D</button>
+        </div>
+    </div>
+    <div class="finish-box hide">
+        <p>Enter your initials</p>
+        <input type="text">
+    <button type="button" class="submit">Submit</button>
+    </div>
+
+    <script src="./assets/script.js"></script>
 
     
 </body>

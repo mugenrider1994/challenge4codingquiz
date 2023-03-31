@@ -1,12 +1,27 @@
 var time = 75;
+var questionIndex = 0;
+var timerEl = document.querySelector(".button-timer");
+var startButton = document.querySelector(".start-button");
+
+
+var questionBox = document.querySelector(".question-box");
+var introBox = document.querySelector(".intro-box");
+var questionElement = document.getElementById('questions');
+
+
+
+
+var id1 = document.getElementById('id1');
+var id2 = document.getElementById('id2');
+var id3 = document.getElementById('id3');
+var id4 = document.getElementById('id4');
 
 function startTimer() {
     setInterval(function(){
         time--;
-        var timerEl = document.querySelector(".button-timer")
         timerEl.textContent = time;
-        if(time <= 0) {
-            alert('Time is up!')
+        if(time === 0) {
+            clearInterval(time)
         }
         
 
@@ -18,14 +33,12 @@ function startTimer() {
 //hide intro box
 //show quiz box
 //timer starts
-var startButton = document.querySelector(".start-button")
-startButton.addEventListener("click", function(){
-    var introBox = document.querySelector(".intro-box")
-    introBox.classList.add("hide")
-    var questionBox = document.querySelector(".question-box")
+
+startButton.addEventListener("click", function(){ 
+    introBox.classList.add("hide")  
     questionBox.classList.remove("hide")
     startTimer()
-    loadQuestion(0)
+    loadQuestion(questionIndex)
 })
 
 //user already clicked start
@@ -35,7 +48,7 @@ startButton.addEventListener("click", function(){
 //check if the user clicked the correct choice
 var questions = [
     {
-        id:1,
+        
         questionText: "What is an array?",
         choices: [
             { text: "A word", isCorrect: false },
@@ -46,7 +59,7 @@ var questions = [
         
     },
     {
-        id:2,
+        
         questionText: "Inside which HTML element do we put the JavaScript?",
         choices: [
             { text: "<javascript>", isCorrect: false},
@@ -56,7 +69,7 @@ var questions = [
         ]
     },
     {
-        id:3,
+        
         questionText: "How do you write \"Hello World\" in an alert box?",
         choices: [
             { text: "alertBox(\"Hello World\");", isCorrect: false},
@@ -66,7 +79,7 @@ var questions = [
         ]
     },
     {
-        id:4,
+        
         questionText: "How do you write \"Hello World\" in an alert box?",
         choices: [
             { text: "function:myFunction()", isCorrect: false},
@@ -79,20 +92,52 @@ var questions = [
 ]
 
 
-var start = true;
 
-function loop(id) {
 
-var result = document.getElementsByClassName(question-box);
-result[0]
+function loadQuestion(index) {
+
+
+questionElement.innerText = questions[index].questionText;
+
+
+
+
+id1.innerText = questions[index].choices[0].text;
+id2.innerText = questions[index].choices[1].text;
+id3.innerText = questions[index].choices[2].text;
+id4.innerText = questions[index].choices[3].text;
+
+
+
 
 }
 
+function clickHandler(el) {
+    let selectedAnswer = parseInt(el.dataset.id);
+    if(questions[questionIndex].choices[selectedAnswer].isCorrect == true) {
+        console.log("Correct");
+    } else {
+        console.log("Wrong");
+    }
+    if(questions[questionIndex].choices[selectedAnswer].isCorrect == true) {
+        
+    }
+    //if it's wrong or right what to do next
+    //if question is correct add one to the index
+    
+}
 
+
+
+
+/*
 function loadQuestion(i) {
     var questionText = questions[i].questionText
     var questionEl = document.querySelector("#questions")
     questionEl.textContent = questionText
     //questions[i].choices[0]
 }
+*/
 
+
+//

@@ -28,6 +28,7 @@ button {
     display: inline-block;
     text-align: center;
     justify-content: center;
+    font-size: auto;
 }
 
 .section {
@@ -41,13 +42,14 @@ button {
 
 .questions-container {
     background-color: antiquewhite;
+    color: black;
     margin: 15px
 }
 
 .question-box {
     margin: 15px;
     padding: 10px;
-    background-color: black;
+    background-color: white;
     text-align: center;
     width: 90vw;
     height: 40vh;
@@ -61,7 +63,7 @@ button {
 .button-container {
     display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
     margin: 15px;
     padding: 10px;
     height: 20vh;
@@ -69,7 +71,7 @@ button {
 }
 
 .choices {
-    width: 10vh;
+    width: 50vh;
     height: 10vh;
     font-size: large;
     

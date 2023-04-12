@@ -1,44 +1,52 @@
 var time = 75;
-var questionIndex = 0;
 var timerEl = document.querySelector(".button-timer");
-var startButton = document.querySelector(".start-button");
+var start = document.getElementsByClassName("start-button")[0];
+console.log(start);
+var submit = document.getElementsByClassName("submit")[0];
+var finishBox = document.querySelector(".finish-box");
 
 
 var questionBox = document.querySelector(".question-box");
 var introBox = document.querySelector(".intro-box");
-var questionElement = document.getElementById('questions');
 
 
-
-
-var id1 = document.getElementById('id1');
-var id2 = document.getElementById('id2');
-var id3 = document.getElementById('id3');
-var id4 = document.getElementById('id4');
 
 function startTimer() {
-    setInterval(function(){
+     let timer = setInterval(function(){
         time--;
         timerEl.textContent = time;
         if(time === 0) {
-            clearInterval(time)
+            gameOver();
+            clearInterval(timer)
+            console.log("Time's up!");
         }
+        
         
 
     }, 1000
     )
 }
 
+function gameOver() {
+
+    questionBox.classList.add("hide")
+    finishBox.classList.remove("hide")
+}
 //user clicks start
 //hide intro box
 //show quiz box
 //timer starts
 
-startButton.addEventListener("click", function(){ 
+
+start.addEventListener("click", function(){ 
     introBox.classList.add("hide")  
     questionBox.classList.remove("hide")
     startTimer()
-    loadQuestion(questionIndex)
+    iterate(id)
+})
+
+submit.addEventListener("click", function() {
+    console.log("submit");
 })
 
 //user already clicked start
@@ -46,9 +54,9 @@ startButton.addEventListener("click", function(){
 //load in the 4 choices of question
 //user can click any answer or choice
 //check if the user clicked the correct choice
-var questions = [
+const questions = [
     {
-        
+        id: 0,
         questionText: "What is an array?",
         choices: [
             { text: "A word", isCorrect: false },
@@ -59,7 +67,7 @@ var questions = [
         
     },
     {
-        
+        id: 1,
         questionText: "Inside which HTML element do we put the JavaScript?",
         choices: [
             { text: "<javascript>", isCorrect: false},
@@ -69,22 +77,23 @@ var questions = [
         ]
     },
     {
-        
-        questionText: "How do you write \"Hello World\" in an alert box?",
+        id: 2,
+        questionText: "What does HTML stand for?",
         choices: [
-            { text: "alertBox(\"Hello World\");", isCorrect: false},
-            { text: "msg(\"Hello World\");", isCorrect: false},
-            { text: "msgBox(\"Hello World\");", isCorrect: false},
-            { text: "alert(\"Hello World\");", isCorrect: true}
+            { text: "Hyper Trainer Marking Language", isCorrect: false},
+            { text: "Hyper Text Marketing Language", isCorrect: false},
+            { text: "Hyper Text Markup Leveler", isCorrect: false},
+            { text: "Hyper Text Markup Language", isCorrect: true}
         ]
     },
     {
-        
-        questionText: "How do you write \"Hello World\" in an alert box?",
+        id: 3,
+        questionText: "How do you write \"Hello World\" in an alert box in JavaScript?",
         choices: [
-            { text: "function:myFunction()", isCorrect: false},
-            { text: "function myFunction()", isCorrect: true},
-            { text: "function = myFunction()", isCorrect: false},
+            { text: "alert = \"Hello World\"", isCorrect: false},
+            { text: "alertBox(\"Hello World\")", isCorrect: false},
+            { text: "alert(\"Hello World\")", isCorrect: true},
+            { text: "window.alert(\"Hello World\")", isCorrect: false}
         ]
     }
 
@@ -93,39 +102,115 @@ var questions = [
 
 
 
+var start = true;
 
-function loadQuestion(index) {
+function iterate(id) {
+    console.log(id);
+    var result = document.getElementsByClassName("result");
+    result[0].innerText = "";
+
+  const question = document.getElementById("question");
+  console.log(questions[id]);
+  question.innerText = questions[id].questionText;
+  if (questions[id].questionText == 3) {
+    return check.classList.add("hide") + next.classList.add("hide");
+    
+  } 
 
 
-questionElement.innerText = questions[index].questionText;
-
-
-
-
-id1.innerText = questions[index].choices[0].text;
-id2.innerText = questions[index].choices[1].text;
-id3.innerText = questions[index].choices[2].text;
-id4.innerText = questions[index].choices[3].text;
-
-
-
-
-}
-
-function clickHandler(el) {
-    let selectedAnswer = parseInt(el.dataset.id);
-    if(questions[questionIndex].choices[selectedAnswer].isCorrect == true) {
-        console.log("Correct");
-    } else {
-        console.log("Wrong");
-    }
-    if(questions[questionIndex].choices[selectedAnswer].isCorrect == true) {
-        
-    }
     //if it's wrong or right what to do next
     //if question is correct add one to the index
+
+    const id1 = document.getElementById('id1');
+    const id2 = document.getElementById('id2');
+    const id3 = document.getElementById('id3');
+    const id4 = document.getElementById('id4');
+ 
+ 
+    // Providing option text
+    id1.innerText = questions[id].choices[0].text;
+    id2.innerText = questions[id].choices[1].text;
+    id3.innerText = questions[id].choices[2].text;
+    id4.innerText = questions[id].choices[3].text;
+ 
+    // Providing the true or false value to the options
+    id1.value = questions[id].choices[0].isCorrect;
+    id2.value = questions[id].choices[1].isCorrect;
+    id3.value = questions[id].choices[2].isCorrect;
+    id4.value = questions[id].choices[3].isCorrect;
     
+
+
+
+var selected = "";
+ 
+// Show selection for id1
+id1.addEventListener("click", () => {
+    id1.style.backgroundColor = "lightgoldenrodyellow";
+    id2.style.backgroundColor = "lightskyblue";
+    id3.style.backgroundColor = "lightskyblue";
+    id4.style.backgroundColor = "lightskyblue";
+    selected = id1.value;
+})
+
+// Show selection for id2
+id2.addEventListener("click", () => {
+    id1.style.backgroundColor = "lightskyblue";
+    id2.style.backgroundColor = "lightgoldenrodyellow";
+    id3.style.backgroundColor = "lightskyblue";
+    id4.style.backgroundColor = "lightskyblue";
+    selected = id2.value;
+})
+
+// Show selection for id3
+id3.addEventListener("click", () => {
+    id1.style.backgroundColor = "lightskyblue";
+    id2.style.backgroundColor = "lightskyblue";
+    id3.style.backgroundColor = "lightgoldenrodyellow";
+    id4.style.backgroundColor = "lightskyblue";
+    selected = id3.value;
+})
+
+// Show selection for id4
+id4.addEventListener("click", () => {
+    id1.style.backgroundColor = "lightskyblue";
+    id2.style.backgroundColor = "lightskyblue";
+    id3.style.backgroundColor = "lightskyblue";
+    id4.style.backgroundColor = "lightgoldenrodyellow";
+    selected = id4.value;
+})
+
+const check = document.getElementsByClassName("check");
+
+check[0].addEventListener("click", () => {
+    if (selected == "true") {
+        result[0].innerHTML = "True";
+        result[0].style.color = "green";
+    } else {
+        result[0].innerHTML = "False";
+        result[0].style.color = "red";
+    }
+})
 }
+
+
+if(start) {
+    iterate("0");
+}
+
+
+const next = document.getElementsByClassName('next')[0];
+var id = 0;
+
+next.addEventListener("click", () => {
+    start = false;
+    if (id < 2) {
+        id++;
+        iterate(id);
+        console.log(id);
+    }
+})
+
 
 
 

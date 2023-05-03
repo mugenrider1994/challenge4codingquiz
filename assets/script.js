@@ -4,6 +4,9 @@ var start = document.getElementsByClassName("start-button")[0];
 console.log(start);
 var submit = document.getElementsByClassName("submit")[0];
 var finishBox = document.querySelector(".finish-box");
+var submitBtn = document.getElementsByClassName("submit");
+var signEl = document.getAnimations('sign');
+var currentQuestionIndex = 0;
 
 
 var questionBox = document.querySelector(".question-box");
@@ -27,10 +30,17 @@ function startTimer() {
     )
 }
 
-function gameOver() {
+function getQuestion() {
+    var currentQuestion = questions[currentQuestionIndex];
 
+    var descriptionEl = document.getElementById('question');
+    descriptionEl.textContent = currentQuestion.questionText;
+}
+
+function gameOver() {
     questionBox.classList.add("hide")
     finishBox.classList.remove("hide")
+    
 }
 //user clicks start
 //hide intro box
@@ -39,24 +49,46 @@ function gameOver() {
 
 
 start.addEventListener("click", function(){ 
-    introBox.classList.add("hide")  
-    questionBox.classList.remove("hide")
-    startTimer()
-    iterate(id)
+    introBox.classList.add("hide");
+    questionBox.classList.remove("hide");
+    startTimer();
+    iterate(id);
+    
 })
 
-submit.addEventListener("click", function() {
-    console.log("submit");
-})
+
+function choicesClick(event) {
+    var buttonEl = event.target;
+    if(buttonEl.value !== questions[currentQuestionIndex].choices[1]) {
+        time -= 15;
+
+        if (time < 0) {
+            time = 0;
+        }
+        timerEl.textContent = time;
+    } else {
+
+    }
+
+    currentQuestionIndex++;
+
+    if(time <= 0 || currentQuestionIndex === questions.length) {
+        gameOver();
+    } else {
+        getQuestion();
+    }
+
+    }
+
 
 //user already clicked start
 //load in the first question
 //load in the 4 choices of question
 //user can click any answer or choice
 //check if the user clicked the correct choice
-const questions = [
+var questions = [
     {
-        id: 0,
+        id: 1,
         questionText: "What is an array?",
         choices: [
             { text: "A word", isCorrect: false },
@@ -67,7 +99,7 @@ const questions = [
         
     },
     {
-        id: 1,
+        id: 2,
         questionText: "Inside which HTML element do we put the JavaScript?",
         choices: [
             { text: "<javascript>", isCorrect: false},
@@ -77,7 +109,7 @@ const questions = [
         ]
     },
     {
-        id: 2,
+        id: 3,
         questionText: "What does HTML stand for?",
         choices: [
             { text: "Hyper Trainer Marking Language", isCorrect: false},
@@ -87,7 +119,7 @@ const questions = [
         ]
     },
     {
-        id: 3,
+        id: 4,
         questionText: "How do you write \"Hello World\" in an alert box in JavaScript?",
         choices: [
             { text: "alert = \"Hello World\"", isCorrect: false},
@@ -104,18 +136,17 @@ const questions = [
 
 var start = true;
 
+
+
 function iterate(id) {
     console.log(id);
     var result = document.getElementsByClassName("result");
     result[0].innerText = "";
 
-  const question = document.getElementById("question");
-  console.log(questions[id]);
+  const question = document.getElementsByClassName("question-container");
+  
   question.innerText = questions[id].questionText;
-  if (questions[id].questionText == 3) {
-    return check.classList.add("hide") + next.classList.add("hide");
-    
-  } 
+ 
 
 
     //if it's wrong or right what to do next
@@ -210,6 +241,53 @@ next.addEventListener("click", () => {
         console.log(id);
     }
 })
+
+function showHighscores() {
+    var highscores = JSON.parse(window.localStorage.getItem('finish-box')) || [];
+    highscores.sort(function(x, y) {
+        return x.score - y.score;
+    });
+
+    for (var i = 0; i < highscores.length; i += 1) {
+        // create li tag for each high score
+        var liTag = document.createElement('li');
+        liTag.textContent = highscores[i].sign + ' - ' + highscores[i].score;
+    
+        // display on page
+        var olEl = document.getElementById('highscores');
+        olEl.appendChild(liTag);
+      }
+}
+
+showHighscores();
+
+
+
+function storeHighscore() {
+    if (sign !== '') {
+        var sign = signEl.value.trim();
+        var highscores = JSON.parse(window.localStorage.getItem('highscores')) || [];
+        var newEgg = {
+        score: time,
+        sign: sign,
+        };
+        highscores.push(newEgg);
+        window.localStorage.setItem('highscores', JSON.stringify(highscores));
+    
+
+    }
+
+}
+
+function checkSubmitButton(event) {
+    if(event.key === 'Submit') {
+        storeHighscore();
+    }
+}
+
+submitBtn.onclick = storeHighscore;
+
+signEl.onkeyup = checkSubmitButton;
 
 
 

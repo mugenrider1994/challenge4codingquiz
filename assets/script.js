@@ -38,6 +38,8 @@ function getQuestion() {
 }
 
 function gameOver() {
+    var finishBoxEl = document.getElementsByClassName("finish-box");
+    finishBoxEl.remove
     questionBox.classList.add("hide")
     finishBox.classList.remove("hide")
     
@@ -59,7 +61,7 @@ start.addEventListener("click", function(){
 
 function choicesClick(event) {
     var buttonEl = event.target;
-    if(buttonEl.value !== questions[currentQuestionIndex].choices[1]) {
+    if(buttonEl.value !== question[currentQuestionIndex].choices) {
         time -= 15;
 
         if (time < 0) {
@@ -260,8 +262,6 @@ function showHighscores() {
 }
 
 showHighscores();
-
-
 
 function storeHighscore() {
     if (sign !== '') {

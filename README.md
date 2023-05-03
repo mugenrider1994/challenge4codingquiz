@@ -14,4 +14,4 @@ This website uses HTML, CSS, JavaScript and DOM manipulation to create a quiz. L
 MIT
 
 ## Screenshots
-<img width="1505" alt="CodingQuiz" src=""
+<img width="1505" alt="CodingQuiz" src="assets/img/CodingQuiz.png">

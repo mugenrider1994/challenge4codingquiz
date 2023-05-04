@@ -18,8 +18,8 @@ function startTimer() {
      let timer = setInterval(function(){
         time--;
         timerEl.textContent = time;
-        if(time === 0) {
-            gameOver();
+        if(time === 0 || time < 0) {
+            quizEnd();
             clearInterval(timer)
             console.log("Time's up!");
         }
@@ -33,17 +33,41 @@ function startTimer() {
 function getQuestion() {
     var currentQuestion = questions[currentQuestionIndex];
 
-    var descriptionEl = document.getElementById('question');
+    var descriptionEl = document.getElementById('questions');
     descriptionEl.textContent = currentQuestion.questionText;
 }
 
-function gameOver() {
-    var finishBoxEl = document.getElementsByClassName("finish-box");
-    finishBoxEl.remove
-    questionBox.classList.add("hide")
-    finishBox.classList.remove("hide")
+id1.addEventListener('click', function() {
+    var text = id1.questionText;
+    if (text === questions[currentQuestionIndex].choices.isCorrect) {
+        getQuestion();
+    } else {
+        time -=15;
+        getQuestion()
+    }
+})
+
+
+function quizEnd() {
     
+    clearInterval(time);
+
+    
+
+    var finishBoxEl = document.getElementById('finish-box');
+    finishBoxEl.classList.remove('hide');
+  
+    // show final score
+    var finalScoreEl = document.getElementById('feedback');
+    finalScoreEl.textContent = time;
+  
+    // hide questions section
+    questionEl.setAttribute('class', 'hide');
+  
 }
+
+    
+
 //user clicks start
 //hide intro box
 //show quiz box
@@ -59,28 +83,6 @@ start.addEventListener("click", function(){
 })
 
 
-function choicesClick(event) {
-    var buttonEl = event.target;
-    if(buttonEl.value !== question[currentQuestionIndex].choices) {
-        time -= 15;
-
-        if (time < 0) {
-            time = 0;
-        }
-        timerEl.textContent = time;
-    } else {
-
-    }
-
-    currentQuestionIndex++;
-
-    if(time <= 0 || currentQuestionIndex === questions.length) {
-        gameOver();
-    } else {
-        getQuestion();
-    }
-
-    }
 
 
 //user already clicked start
@@ -220,10 +222,14 @@ check[0].addEventListener("click", () => {
         result[0].innerHTML = "True";
         result[0].style.color = "green";
     } else {
+        time -= 15;
         result[0].innerHTML = "False";
         result[0].style.color = "red";
     }
+    
+    
 })
+
 }
 
 
@@ -261,29 +267,38 @@ function showHighscores() {
       }
 }
 
-showHighscores();
-
-function storeHighscore() {
-    if (sign !== '') {
-        var sign = signEl.value.trim();
-        var highscores = JSON.parse(window.localStorage.getItem('highscores')) || [];
-        var newEgg = {
+function saveHighscore() {
+    // get value of input box
+    var initials = initialsEl.value.trim();
+  
+    // make sure value wasn't empty
+    if (initials !== '') {
+      // get saved scores from localstorage, or if not any, set to empty array
+      var highscores =
+        JSON.parse(window.localStorage.getItem('highscores')) || [];
+  
+      // format new score object for current user
+      var newScore = {
         score: time,
-        sign: sign,
-        };
-        highscores.push(newEgg);
-        window.localStorage.setItem('highscores', JSON.stringify(highscores));
-    
-
+        initials: initials,
+      };
+  
+      // save to localstorage
+      highscores.push(newScore);
+      window.localStorage.setItem('highscores', JSON.stringify(highscores));
+  
+      // redirect to next page
+      window.location.href = 'highscores.html';
     }
+  }
 
-}
 
-function checkSubmitButton(event) {
-    if(event.key === 'Submit') {
-        storeHighscore();
+  function checkForEnter(event) {
+    // "13" represents the enter key
+    if (event.key === 'Enter') {
+      saveHighscore();
     }
-}
+  }
 
 submitBtn.onclick = storeHighscore;
 

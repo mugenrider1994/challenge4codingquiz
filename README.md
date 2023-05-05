@@ -15,3 +15,6 @@ MIT
 
 ## Screenshots
 <img width="1505" alt="CodingQuiz" src="assets/img/CodingQuiz.png">
+
+## Deployment
+https://mugenrider1994.github.io/challenge4codingquiz/

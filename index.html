@@ -8,6 +8,7 @@
     <title>Coding Quiz Challenge</title>
 </head>
 <body>
+    <div class="scores"><a href="highscores.html">View Highscores</a></div>
     <header>
         <h1>Coding Quiz</h1>
     </header>
@@ -17,12 +18,10 @@
     </navbar>
     <div class="intro-box">Coding Quiz Challenge!
         <p>Try to answer the the following questions before the time runs out!</p>
-        <button type="button" class="start-button">Start</button>
+        <button type="button" id="pleaseStart"class="start-button">Start</button>
     </div>
     <div class="question-box hide">
-        <div class="result">
-
-        </div>
+        <div class="result"></div>
         <div class="question-container" id="question">
             What is this?
         </div>
@@ -37,13 +36,13 @@
             <button class="next">Next</button>
         </div>
     </div>
-    <div class="finish-box hide">
+    <div id="finish-box" class="hide">
         <h2>Quiz Ended</h2>
         <p>Enter your initials
         <input type="text" id="sign" max="3" />
-    <button type="button" class="submit">Submit</button>
+    <button id="submit" >Submit</button>
         </p>
-    <div id="feedback" class="high-score hide"></div>
+    <div id="feedback" class="highscore hide"></div>
     </div>
 
     <script src="./assets/script.js"></script>

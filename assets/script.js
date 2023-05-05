@@ -1,12 +1,14 @@
 var time = 75;
 var timerEl = document.querySelector(".button-timer");
-var start = document.getElementsByClassName("start-button")[0];
-console.log(start);
-var submit = document.getElementsByClassName("submit")[0];
-var finishBox = document.querySelector(".finish-box");
-var submitBtn = document.getElementsByClassName("submit");
-var signEl = document.getAnimations('sign');
+var startBtn = document.getElementsByClassName("start-button")[0];
+var start = document.querySelector(".start-button");
+
+
+var finishBox = document.querySelector("#finish-box");
+var submitBtn = document.getElementById('submit');
+var signEl = document.getElementById('sign');
 var currentQuestionIndex = 0;
+var questionsEl = document.querySelector('.question');
 
 
 var questionBox = document.querySelector(".question-box");
@@ -15,13 +17,17 @@ var introBox = document.querySelector(".intro-box");
 
 
 function startTimer() {
+    
      let timer = setInterval(function(){
         time--;
         timerEl.textContent = time;
-        if(time === 0 || time < 0) {
+        if(time <= 0) {
+            clearInterval(timer);
             quizEnd();
-            clearInterval(timer)
-            console.log("Time's up!");
+        }
+        if(currentQuestionIndex == 2) {
+            clearInterval(timer);
+            quizEnd();
         }
         
         
@@ -30,39 +36,28 @@ function startTimer() {
     )
 }
 
+
 function getQuestion() {
     var currentQuestion = questions[currentQuestionIndex];
 
-    var descriptionEl = document.getElementById('questions');
-    descriptionEl.textContent = currentQuestion.questionText;
+    var descriptionEl = document.getElementById('question');
+    descriptionEl.textContent = currentQuestion.innerText;
 }
-
-id1.addEventListener('click', function() {
-    var text = id1.questionText;
-    if (text === questions[currentQuestionIndex].choices.isCorrect) {
-        getQuestion();
-    } else {
-        time -=15;
-        getQuestion()
-    }
-})
 
 
 function quizEnd() {
     
     clearInterval(time);
 
-    
-
     var finishBoxEl = document.getElementById('finish-box');
-    finishBoxEl.classList.remove('hide');
+    finishBoxEl.removeAttribute('class');
   
     // show final score
     var finalScoreEl = document.getElementById('feedback');
     finalScoreEl.textContent = time;
   
     // hide questions section
-    questionEl.setAttribute('class', 'hide');
+    
   
 }
 
@@ -73,12 +68,20 @@ function quizEnd() {
 //show quiz box
 //timer starts
 
+window.addEventListener("DOMContentLoaded", () => {
+    const start = document.querySelector('start-button');
+    if (start) {
+      start.addEventListener('click', swapper, false);
+    }
+});
+
 
 start.addEventListener("click", function(){ 
     introBox.classList.add("hide");
     questionBox.classList.remove("hide");
     startTimer();
     iterate(id);
+    getQuestion();
     
 })
 
@@ -138,7 +141,8 @@ var questions = [
 
 
 
-var start = true;
+
+
 
 
 
@@ -147,7 +151,7 @@ function iterate(id) {
     var result = document.getElementsByClassName("result");
     result[0].innerText = "";
 
-  const question = document.getElementsByClassName("question-container");
+  const question = document.getElementById("question");
   
   question.innerText = questions[id].questionText;
  
@@ -222,7 +226,7 @@ check[0].addEventListener("click", () => {
         result[0].innerHTML = "True";
         result[0].style.color = "green";
     } else {
-        time -= 15;
+        time = time - 15;
         result[0].innerHTML = "False";
         result[0].style.color = "red";
     }
@@ -233,46 +237,27 @@ check[0].addEventListener("click", () => {
 }
 
 
-if(start) {
-    iterate("0");
-}
+
 
 
 const next = document.getElementsByClassName('next')[0];
 var id = 0;
 
 next.addEventListener("click", () => {
-    start = false;
+    start(false);
     if (id < 2) {
         id++;
         iterate(id);
-        console.log(id);
     }
 })
 
-function showHighscores() {
-    var highscores = JSON.parse(window.localStorage.getItem('finish-box')) || [];
-    highscores.sort(function(x, y) {
-        return x.score - y.score;
-    });
-
-    for (var i = 0; i < highscores.length; i += 1) {
-        // create li tag for each high score
-        var liTag = document.createElement('li');
-        liTag.textContent = highscores[i].sign + ' - ' + highscores[i].score;
-    
-        // display on page
-        var olEl = document.getElementById('highscores');
-        olEl.appendChild(liTag);
-      }
-}
 
 function saveHighscore() {
     // get value of input box
-    var initials = initialsEl.value.trim();
+    var sign = signEl.value.trim();
   
     // make sure value wasn't empty
-    if (initials !== '') {
+    if (sign !== '') {
       // get saved scores from localstorage, or if not any, set to empty array
       var highscores =
         JSON.parse(window.localStorage.getItem('highscores')) || [];
@@ -280,7 +265,7 @@ function saveHighscore() {
       // format new score object for current user
       var newScore = {
         score: time,
-        initials: initials,
+        sign: sign,
       };
   
       // save to localstorage
@@ -293,16 +278,18 @@ function saveHighscore() {
   }
 
 
-  function checkForEnter(event) {
+  function checkForSubmit(event) {
     // "13" represents the enter key
-    if (event.key === 'Enter') {
+    if (event.key === 'Submit') {
       saveHighscore();
     }
   }
 
-submitBtn.onclick = storeHighscore;
+startBtn.onclick = startTimer;
 
-signEl.onkeyup = checkSubmitButton;
+submitBtn.onclick = saveHighscore;
+
+signEl.onkeyup = checkForSubmit;
 
 
 
